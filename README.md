@@ -1,154 +1,132 @@
-# SIYENA - Plateforme de Gestion Technique
+<div align="center">
+  <p>
+    <img src="client/src/media/cims.png" alt="CIMS Logo" width="250" style="margin-right: 30px;" />
+    <img src="client/src/media/siyana.png" alt="SIYENA Logo" width="250" />
+  </p>
 
-<p align="center">
-  <img src="client/src/media/cims.png" alt="CIMS Logo" width="300" style="margin-right: 20px;" />
-  <img src="client/src/media/siyana.png" alt="SIYENA Logo" width="300" />
-</p>
-## À propos
+# 🛠️ SIYENA - Plateforme de Gestion Technique
 
-SIYENA est une plateforme modulaire dédiée à la gestion des interventions techniques et du personnel. Elle permet aux administrateurs de gérer les accès des techniciens, et aux employés techniques d'intervenir plus efficacement.
+**Une plateforme modulaire et moderne pour le suivi des interventions et la gestion du personnel technique.**
 
-Le projet est divisé en deux parties : 
-- **Le frontend (Client)** : Une application Single Page Application (SPA) bâtie avec Angular (v16+) utilisant Tailwind CSS pour moderniser l'interface.
-- **Le backend (Server)** : Une API REST robuste propulsée par Node.js, Express, avec une base de données MongoDB, intégrant des notifications en temps réel avec Socket.IO.
+[![Angular](https://img.shields.io/badge/Angular-v16+-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-Backend-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-API-404D59?style=for-the-badge)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-RealTime-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io/)
 
----
-
-## 🛠 Technologies Principales
-
-### Frontend (Client)
-![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
-### Backend (Server)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+</div>
 
 ---
 
-## 🚀 Pré-requis
+## 📖 À propos du projet
 
-Avant de lancer le projet, assurez-vous d'avoir installé sur votre machine :
-- Node.js (v18+)
-- Angular CLI
-- Un cluster MongoDB (ex: MongoDB Atlas)
+**SIYENA** a été pensée pour répondre aux défis techniques et logistiques des équipes d'intervention. Elle fluidifie l'intégration de nouveaux membres, sécurise l'accès aux données grâce à un système d'authentification par rôle, et permet un suivi en temps réel.
+
+🚀 **Double architecture** :
+- **Frontend** : Application Single Page (SPA) en **Angular** avec une UI élégante et entièrement responsive grâce à **Tailwind CSS**.
+- **Backend** : API REST robuste en **Node.js** dotée de WebSockets (Socket.IO) pour l'instantanéité.
 
 ---
 
-## ⚙️ Installation & Configuration
+## ✨ Fonctionnalités Clés
 
-### 1. Cloner le Projet
+| Fonctionnalité | Description |
+| :--- | :--- |
+| **🛡️ Authentification Sécurisée** | Inscription/Connexion sécurisée par **JWT** et **Bcrypt**. Les nouveaux comptes sont mis "en attente" d'approbation. |
+| **👑 Panneau Administrateur** | Gestion visuelle des utilisateurs : modifier les rôles, accepter ou rejeter (supprimer) les nouvelles inscriptions. |
+| **⚡ Temps Réel & Alertes** | Centre de notifications intégré alimenté par **Socket.IO** pour les événements critiques (ex: arrivée d'un nouveau membre). |
+| **📧 Processus Email Automatisé** | Déclenchement automatique d'un email de bienvenue stylisé (via **Nodemailer**) dès qu'un compte est approuvé par l'admin. |
 
-Commencez par ouvrir un terminal et récupérer le dossier du projet en local.
+---
 
-### 2. Configuration du Backend
+## 🚦 Démarrage Rapide
 
-```bash
-cd server
-npm install
-```
+### Pré-requis obligatoires
+- **Node.js** (v18+)
+- **Angular CLI**
+- Accès à un cluster **MongoDB** (ex: Atlas)
 
-Créez un fichier `.env` à la racine du dossier **`server`** en vous inspirant du fichier existant `.env.example`.
+### 1. Variables d'Environnement
+Dans le répertoire `server/`, créez un fichier `.env` basé sur `.env.example` :
 
-Ce fichier devra contenir des éléments vitaux tel que :
 ```ini
 PORT=5000
-MONGODB_URI=mongodb+srv://<user>:<password>@cluster...
-JWT_SECRET=votre_clef_secrète_jwt
+MONGODB_URI=mongodb+srv://<votre_cluster>
+JWT_SECRET=super_secret_jwt_key
 JWT_EXPIRES_IN=1d
 
-# Paramètres Email SMTP
+# Paramètres SMTP (ex: Gmail App Password)
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=votre.email@gmail.com
-EMAIL_PASS=votre_mot_de_passe_d_application
-EMAIL_FROM=votre.email@gmail.com
+EMAIL_USER=votre_email@gmail.com
+EMAIL_PASS=votre_mot_de_passe_app
+EMAIL_FROM=votre_email@gmail.com
 ```
 
-### 3. Configuration du Frontend
+### 2. Lancement Global (Développement)
 
-Ouvrez un autre onglet du terminal :
+> Nous vous conseillons d'ouvrir deux terminaux simultanément.
+
+**🖥️ Terminal 1 - Serveur (Port 5000) :**
+```bash
+cd server
+npm install
+npm start # (ou npm run dev pour hot-reload)
+```
+
+**🌐 Terminal 2 - Client Angular (Port 4200) :**
 ```bash
 cd client
 npm install
-```
-
----
-
-## 💻 Démarrage en Mode Développement
-
-**1. Lancer le Serveur (Node API) :**
-```bash
-cd server
-npm start
-# (Ou "npm run dev" pour démarrer avec nodemon)
-```
-Le serveur écoutera par défaut sur le port 5000 (`http://localhost:5000`).
-
-**2. Lancer le Client (Angular) :**
-```bash
-cd client
 ng serve
 ```
-Accédez à l'application via `http://localhost:4200` dans votre navigateur.
+
+👉 L'application est maintenant disponible sur : **[http://localhost:4200](http://localhost:4200)**
 
 ---
 
-## ✨ Fonctionnalités Principales
+## 👥 Gestion des Autorisations
 
-1. **Système d'Authentification :**
-   - Inscription des techniciens et employés.
-   - Système de "Comptes en Attente" (Pending Approval) qui interdit la connexion aux utilisateurs non approuvés.
-   - Les administrateurs peuvent se connecter en toute sécurité.
+Le système repose sur un contrôle d'accès strict (RBAC) :
 
-2. **Panneau d'Administration :**
-   - Interface de gestion des employés/techniciens.
-   - Approbation ou Rejet (avec suppression) des nouveaux membres.
-   - Ajout dynamique, suppression et modification des rôles d'utilisateurs (`admin`, `technician`, `employee`).
-   - Centre de Notifications complet avec Socket.IO (alertes "nouvel utilisateur").
-
-3. **Système de Notification (Email & Realtime) :**
-   - Lorsqu'un compte d'un technicien est approuvé par l'admin, ce dernier reçoit un email automatique et stylisé.
-   - Indicateurs visuels dans l'UI des notifications non-lues.
+- 🔴 **Admin (`admin`)** : Contrôle absolu. Gère les membres, modifie les niveaux d'accès, et reçoit les alertes de sécurité et d'arrivées.
+- 🔵 **Technicien (`technician`)** : Utilisateur standard. Peut intervenir sur les processus métiers et visualiser son dashboard technique.
+- 🟢 **Employé (`employee`)** : Profil avec un niveau d'interaction limité, orienté vers la visualisation d'informations.
 
 ---
 
-## 📁 Structure Globale
+<details>
+<summary><b>📂 Voir l'Architecture du Projet</b></summary>
+<br>
 
-\`\`\`
-siyenav1/
+```text
+SIYENA/
+├─ client/                # FRONTEND (Angular + Tailwind)
+│  ├─ src/
+│  │  ├─ app/
+│  │  │  ├─ core/         # Services globaux, Intercepteurs HTTP, Guards (Auth)
+│  │  │  ├─ features/     # Composants métiers (Login, Admin Dashboard, Profil)
+│  │  │  └─ shared/       # Composants réutilisables (Navbar, Footer)
+│  │  ├─ assets/          # Médias & Images
+│  │  └─ environments/    # URLs d'API pour dév / prod
+│  └─ ...
 │
-├── client/                     # Dossier Angular
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── core/           # Guards de routes, Intercepteurs HTTP, Services API
-│   │   │   ├── features/       # Composants (Auth, Admin, Dashboard, Profile...)
-│   │   │   └── shared/         # Ressources inter-projets
-│   └── ...
+├─ server/                # BACKEND (Node.js + Express)
+│  ├─ controllers/        # Logique métier liant les requêtes et la base de données
+│  ├─ middleware/         # Protections de routes (Vérification JWT & Rôles)
+│  ├─ models/             # Modèles Mongoose (Données)
+│  ├─ routes/             # Indexation des endpoints API (/api/auth, /api/admin...)
+│  ├─ services/           # Services tiers autonomes (Envoi d'e-mails HTML, WebSockets...)
+│  └─ server.js           # Point de lancement (Bootstrap de l'app)
 │
-├── server/                     # API Backend
-│   ├── controllers/            # Logique de gestion de requêtes API
-│   ├── middleware/             # Middleware d'authentification et check d'erreurs
-│   ├── models/                 # Schémas Mongoose (Technician, Notification...)
-│   ├── routes/                 # Routes Express HTTP
-│   ├── services/               # Services Email, Notifications, Auth...
-│   ├── utils/                  # Classes utilitaires (AsyncHandler, AppError)
-│   └── server.js               # Fichier d'entrée central du backend
-│
-└── .gitignore                  # Fichiers à exclure des commits (ex: node_modules, .env)
-\`\`\`
+└─ README.md
+```
+
+</details>
 
 ---
 
-## 👥 Rôles Utilisateurs
-
-* **Administrateur (admin) :** Gère les comptes et traite les alertes (accepte/rejete). Agit en tant que Root.
-* **Technicien (technician) :** Le technicien intervenant classique, accès aux rapports du dashboard principal.
-* **Employé (employee) :** Accès en lecture seule à certains éléments limités.
-
----
-
-*Développé pour la gestion interne de SIYENA.*
+<p align="center">
+  <i>Développé avec ❤️ pour optimiser la productivité et la gestion technique.</i>
+</p>
