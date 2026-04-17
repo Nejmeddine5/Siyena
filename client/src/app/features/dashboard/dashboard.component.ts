@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/admin/dashboard']);
       return;
     }
-    
+
     this.notificationService.loadNotifications();
   }
 

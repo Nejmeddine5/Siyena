@@ -17,11 +17,11 @@
         <!-- Avatar -->
         <div class="relative -mt-16 mb-6">
           <div class="inline-flex items-center justify-center h-32 w-32 rounded-2xl bg-white dark:bg-gray-750 shadow-lg border-4 border-white dark:border-gray-800 text-3xl font-bold text-indigo-600 dark:text-indigo-400 overflow-hidden">
-            <ng-container *ngIf="user()?.role === 'admin'; else initialAvatar">
-              <img src="media/cims.png" alt="Admin Avatar" class="h-full w-full object-cover">
+            <ng-container *ngIf="user()?.role === 'admin'; else techAvatar">
+              <img src="/media/admin.png" alt="Admin Avatar" class="h-full w-full object-cover">
             </ng-container>
-            <ng-template #initialAvatar>
-              {{ user()?.nom?.charAt(0) }}
+            <ng-template #techAvatar>
+              <img src="/media/technicien.png" alt="Technicien Avatar" class="h-full w-full object-cover">
             </ng-template>
           </div>
         </div>
