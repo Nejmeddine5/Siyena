@@ -126,7 +126,3 @@ SIYENA/
 </details>
 
 ---
-
-<p align="center">
-  <i>Développé avec ❤️ pour optimiser la productivité et la gestion technique.</i>
-</p>
