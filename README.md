@@ -17,16 +17,15 @@ Le projet est divisé en deux parties :
 ## 🛠 Technologies Principales
 
 ### Frontend (Client)
-* **Framework :** [Angular](https://angular.io/)
-* **Style CSS :** [Tailwind CSS](https://tailwindcss.com/)
-* **Routage et formulaires :** ReactiveFormsModule, Angular Router
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ### Backend (Server)
-* **Environnement :** [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/)
-* **Base de Données :** [MongoDB](https://www.mongodb.com/) (Mongoose)
-* **Temps Réel :** [Socket.IO](https://socket.io/)
-* **Authentification :** JSON Web Tokens (JWT) et Bcrypt (hashage)
-* **Notifications Email :** Nodemailer (Configuration Gmail)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Socket.IO](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
 ---
 
