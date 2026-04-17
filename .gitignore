@@ -1,0 +1,39 @@
+# Dépendances Node.js
+node_modules/
+**/node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Fichiers d'environnement (Sécurité - NE JAMAIS COMMIT !)
+.env
+.env.*
+!.env.example
+server/.env
+
+# Build et Cache (Angular/Serveur)
+dist/
+tmp/
+out-tsc/
+bazel-out/
+.angular/
+
+# Editeurs / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs/
+*.log
+
+# Scripts ou fichiers de test brouillons (optionnel mais recommandé pour garder le repo propre)
+check_notifs.js
+seed_notif.js
+backend_requests.http
