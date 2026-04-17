@@ -79,7 +79,7 @@ npm start # (ou npm run dev pour hot-reload)
 ```bash
 cd client
 npm install
-ng serve
+npx ng serve --host 0.0.0.0
 ```
 
 👉 L'application est maintenant disponible sur : **[http://localhost:4200](http://localhost:4200)**
