@@ -65,4 +65,31 @@ export class NotificationService {
       this.notifications.set(res.data.notifications);
     });
   }
+
+  markAsRead(id: string) {
+    this.http.patch<any>(`${this.apiUrl}/${id}/read`, {}).subscribe({
+      next: () => {
+        // Update local state
+        this.notifications.set(
+          this.notifications().map(n => n._id === id ? { ...n, read: true } : n)
+        );
+      },
+    });
+  }
+
+  markAllAsRead() {
+    const user = this.authService.currentUser();
+    if (!user) return;
+
+    this.http.patch<any>(`${this.apiUrl}/read-all/${user._id}`, {}).subscribe({
+      next: () => {
+        this.notifications.set(
+          this.notifications().map(n => ({ ...n, read: true }))
+        );
+      },
+      error: (err) => console.error('Failed to mark all as read', err)
+    });
+  }
 }
+
+

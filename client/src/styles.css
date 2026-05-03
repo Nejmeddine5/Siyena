@@ -1,3 +1,6 @@
+@import "@angular/cdk/overlay-prebuilt.css";
+
+
 /* Global styles */
 body {
   margin: 0;
@@ -50,3 +53,4 @@ html.dark body, body.dark {
 .dark .overlay-panel, body.dark .overlay-panel {
   color: #ffffff !important;
 }
+

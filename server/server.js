@@ -11,6 +11,8 @@ const AppError = require('./utils/appError');
 const authRoutes = require('./routes/authRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const alertRoutes = require('./routes/alertRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
 const errorMiddleware = require('./middleware/errorMiddleware');
 
 // Load environment variables
@@ -53,6 +55,8 @@ io.on('connection', (socket) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/alerts', alertRoutes);
+app.use('/api/tickets', ticketRoutes);
 
 // Handle undefined routes
 app.all('*', (req, res, next) => {

@@ -17,6 +17,10 @@ const markAsRead = async (id) => {
   return await Notification.findByIdAndUpdate(id, { read: true }, { new: true });
 };
 
+const markAllAsRead = async (technicienId) => {
+  return await Notification.updateMany({ technicienId, read: false }, { read: true });
+};
+
 const deleteNotification = async (id) => {
   return await Notification.findByIdAndDelete(id);
 };
@@ -26,5 +30,6 @@ module.exports = {
   getAdminNotifications,
   createNotification,
   markAsRead,
+  markAllAsRead,
   deleteNotification
 };

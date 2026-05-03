@@ -30,6 +30,16 @@ exports.markAsRead = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.markAllAsRead = asyncHandler(async (req, res, next) => {
+  await notificationService.markAllAsRead(req.params.technicienId);
+
+  res.status(200).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+
 exports.deleteNotification = asyncHandler(async (req, res, next) => {
   await notificationService.deleteNotification(req.params.id);
 
