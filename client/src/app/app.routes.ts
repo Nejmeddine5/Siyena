@@ -14,7 +14,7 @@ import { TechnicianLayoutComponent } from './features/dashboard/technician-layou
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  
+
   // Technician Routes
   {
     path: '',

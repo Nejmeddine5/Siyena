@@ -46,8 +46,37 @@
 }
 
 .kanban-column {
-    min-width: 320px;
-    max-width: 320px;
+  width: 320px;
+  min-width: 320px;
+}
+
+@keyframes highlight-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1.02); }
+}
+
+.search-highlight {
+  animation: highlight-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 25px 8px rgba(156, 163, 175, 0.3) !important;
+  border-color: #94a3b8 !important;
+  position: relative;
+  z-index: 20;
+}
+
+.search-highlight::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  pointer-events: none;
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 @media (max-width: 640px) {

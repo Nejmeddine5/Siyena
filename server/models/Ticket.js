@@ -20,7 +20,12 @@ const ticketSchema = new mongoose.Schema({
     action: String,
     performedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Technician' },
     date: { type: Date, default: Date.now }
-  }]
+  }],
+  resolutionReport: {
+    problemDescription: String,
+    actionTaken: String,
+    date: Date
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

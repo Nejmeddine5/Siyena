@@ -25,6 +25,11 @@ export interface Ticket {
   status: 'pending' | 'assigned' | 'in_progress' | 'resolved' | 'cancelled';
   assignedTechnician: any;
   createdAt: string;
+  resolutionReport?: {
+    problemDescription: string;
+    actionTaken: string;
+    date: string;
+  };
 }
 
 @Injectable({
@@ -52,8 +57,12 @@ export class TicketService {
   }
 
 
-  updateTicketStatus(ticketId: string, status: string): Observable<{ status: string, data: Ticket }> {
-    return this.http.patch<{ status: string, data: Ticket }>(`${this.apiUrl}/tickets/${ticketId}/status`, { status });
+  updateTicketStatus(ticketId: string, status: string, resolutionReport?: any): Observable<{ status: string, data: Ticket }> {
+    const payload: any = { status };
+    if (resolutionReport) {
+      payload.resolutionReport = resolutionReport;
+    }
+    return this.http.patch<{ status: string, data: Ticket }>(`${this.apiUrl}/tickets/${ticketId}/status`, payload);
   }
 
   assignTicket(ticketId: string, technicianId: string): Observable<{ status: string, data: Ticket }> {

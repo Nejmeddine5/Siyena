@@ -22,6 +22,7 @@ export class TicketsComponent implements OnInit {
   ticketService = inject(TicketService);
   socketService = inject(SocketService);
   authService = inject(AuthService);
+  searchQuery = signal('');
 
   to_do: Ticket[] = []; // Merged pending + assigned
   in_progress: Ticket[] = [];
@@ -44,6 +45,18 @@ export class TicketsComponent implements OnInit {
   showAssignModal = signal(false);
   selectedTicketId = signal<string | null>(null);
 
+  // Resolution Report
+  showReportModal = signal(false);
+  resolutionReport = {
+    problemDescription: '',
+    actionTaken: ''
+  };
+  pendingDropData: any = null;
+
+  // Details Modal
+  showDetailsModal = signal(false);
+  selectedTicket = signal<Ticket | null>(null);
+
 
   ngOnInit() {
     this.fetchTickets();
@@ -51,13 +64,19 @@ export class TicketsComponent implements OnInit {
       this.fetchTechnicians();
     }
 
+    const currentUserId = this.authService.currentUser()?._id;
+
     this.socketService.listen('newTicket').subscribe((ticket: Ticket) => {
-      this.pushTicketToColumn(ticket);
+      if (this.isAdmin || ticket.assignedTechnician?._id === currentUserId || ticket.assignedTechnician === currentUserId) {
+        this.pushTicketToColumn(ticket);
+      }
     });
 
     this.socketService.listen('ticketUpdated').subscribe((ticket: Ticket) => {
       this.removeTicketFromAllColumns(ticket._id);
-      this.pushTicketToColumn(ticket);
+      if (this.isAdmin || ticket.assignedTechnician?._id === currentUserId || ticket.assignedTechnician === currentUserId) {
+        this.pushTicketToColumn(ticket);
+      }
     });
   }
 
@@ -142,6 +161,19 @@ export class TicketsComponent implements OnInit {
 
       const status = htmlIdToStatus[newStatusId] || 'pending';
 
+      if (status === 'resolved') {
+        // Intercept resolution to show report modal
+        this.pendingDropData = {
+          ticket,
+          previousContainer: event.previousContainer,
+          container: event.container,
+          previousIndex: event.previousIndex,
+          currentIndex: event.currentIndex
+        };
+        this.openReportModal(ticket);
+        return;
+      }
+
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -222,6 +254,77 @@ export class TicketsComponent implements OnInit {
   triggerFakeError(msg: string) {
     this.fakeError.set(msg);
     setTimeout(() => this.fakeError.set(null), 5000);
+  }
+
+  // Report Modal Methods
+  openReportModal(ticket: Ticket) {
+    this.selectedTicketId.set(ticket._id);
+    this.resolutionReport = { problemDescription: '', actionTaken: '' };
+    this.showReportModal.set(true);
+  }
+
+  closeReportModal() {
+    this.showReportModal.set(false);
+    this.pendingDropData = null;
+  }
+
+  submitResolutionReport() {
+    if (!this.resolutionReport.problemDescription || !this.resolutionReport.actionTaken) {
+      this.triggerFakeError("Veuillez remplir tous les champs du rapport.");
+      return;
+    }
+
+    const { ticket } = this.pendingDropData;
+
+    this.ticketService.updateTicketStatus(ticket._id, 'resolved', this.resolutionReport).subscribe({
+      next: (res) => {
+        // The response contains the updated ticket with the report
+        const updatedTicket = res.data;
+        
+        // Remove from old location and add to resolved
+        this.removeTicketFromAllColumns(ticket._id);
+        this.pushTicketToColumn(updatedTicket);
+        
+        this.closeReportModal();
+      },
+      error: (err) => {
+        this.triggerFakeError("Échec de la clôture du ticket.");
+      }
+    });
+  }
+
+  // Details Modal Methods
+  openDetailsModal(ticket: Ticket) {
+    this.selectedTicket.set(ticket);
+    this.showDetailsModal.set(true);
+  }
+
+  closeDetailsModal() {
+    this.showDetailsModal.set(false);
+    this.selectedTicket.set(null);
+  }
+
+  matchesSearch(ticket: Ticket): boolean {
+    if (!this.searchQuery()) return true;
+    const s = this.searchQuery().toLowerCase();
+    
+    // Status translation map for better searching (optional but good for UX)
+    const statusMap: { [key: string]: string } = {
+      'pending': 'à faire pending',
+      'assigned': 'assigné assigned',
+      'in_progress': 'en cours progress',
+      'resolved': 'résolu resolved'
+    };
+    const translatedStatus = statusMap[ticket.status] || ticket.status;
+
+    return (
+      ticket.clientName?.toLowerCase().includes(s) ||
+      ticket.ticketId?.toLowerCase().includes(s) ||
+      ticket.issue?.toLowerCase().includes(s) ||
+      ticket.assignedTechnician?.nom?.toLowerCase().includes(s) ||
+      translatedStatus.toLowerCase().includes(s) ||
+      ticket.priority?.toLowerCase().includes(s)
+    );
   }
 }
 

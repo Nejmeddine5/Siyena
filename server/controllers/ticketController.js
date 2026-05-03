@@ -51,12 +51,19 @@ exports.createTicket = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAllTickets = asyncHandler(async (req, res, next) => {
-  const tickets = await Ticket.find().populate('assignedTechnician', 'nom');
+  let filter = {};
+
+  // If the user is a technician, only show tickets assigned to them
+  if (req.technician.role === 'technician') {
+    filter.assignedTechnician = req.technician._id;
+  }
+
+  const tickets = await Ticket.find(filter).populate('assignedTechnician', 'nom');
   res.status(200).json({ status: 'success', results: tickets.length, data: tickets });
 });
 
 exports.updateTicketStatus = asyncHandler(async (req, res, next) => {
-  const { status } = req.body;
+  const { status, resolutionReport } = req.body;
   const ticket = await Ticket.findById(req.params.id);
 
   if (!ticket) return next(new AppError('Ticket not found', 404));
@@ -66,6 +73,13 @@ exports.updateTicketStatus = asyncHandler(async (req, res, next) => {
     : null;
 
   ticket.status = status;
+  if (resolutionReport) {
+    ticket.resolutionReport = {
+      ...resolutionReport,
+      date: new Date()
+    };
+  }
+
   ticket.history.push({
     action: `Status changed to ${status}`,
     performedBy: performedBy
