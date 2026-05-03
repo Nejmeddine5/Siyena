@@ -35,8 +35,7 @@ export class TicketsComponent implements OnInit {
   newTicket = {
     title: '',
     description: '',
-    priority: 'medium',
-    clientName: ''
+    priority: 'medium'
   };
 
   fakeError = signal<string | null>(null);
@@ -76,6 +75,13 @@ export class TicketsComponent implements OnInit {
       this.removeTicketFromAllColumns(ticket._id);
       if (this.isAdmin || ticket.assignedTechnician?._id === currentUserId || ticket.assignedTechnician === currentUserId) {
         this.pushTicketToColumn(ticket);
+      }
+    });
+
+    this.socketService.listen('ticketDeleted').subscribe((data: any) => {
+      this.removeTicketFromAllColumns(data._id);
+      if (this.selectedTicket() && this.selectedTicket()?._id === data._id) {
+        this.closeDetailsModal();
       }
     });
   }
@@ -202,8 +208,8 @@ export class TicketsComponent implements OnInit {
   }
 
   createTicket() {
-    if (!this.newTicket.title || !this.newTicket.clientName) {
-      this.triggerFakeError("Veuillez remplir au moins le titre et le nom du client.");
+    if (!this.newTicket.title) {
+      this.triggerFakeError("Veuillez remplir le titre.");
       return;
     }
 
@@ -218,7 +224,7 @@ export class TicketsComponent implements OnInit {
       next: (res) => {
 
         this.closeCreateModal();
-        this.newTicket = { title: '', description: '', priority: 'medium', clientName: '' };
+        this.newTicket = { title: '', description: '', priority: 'medium' };
         // The list will update via socket if implemented, otherwise fetch again
         this.fetchTickets();
       },
@@ -304,6 +310,22 @@ export class TicketsComponent implements OnInit {
     this.selectedTicket.set(null);
   }
 
+  deleteTicket(ticketId: string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer définitivement ce ticket ?')) {
+      this.ticketService.deleteTicket(ticketId).subscribe({
+        next: () => {
+          this.removeTicketFromAllColumns(ticketId);
+          if (this.selectedTicket() && this.selectedTicket()?._id === ticketId) {
+            this.closeDetailsModal();
+          }
+        },
+        error: (err) => {
+          this.triggerFakeError("Impossible de supprimer le ticket.");
+        }
+      });
+    }
+  }
+
   matchesSearch(ticket: Ticket): boolean {
     if (!this.searchQuery()) return true;
     const s = this.searchQuery().toLowerCase();
@@ -318,7 +340,6 @@ export class TicketsComponent implements OnInit {
     const translatedStatus = statusMap[ticket.status] || ticket.status;
 
     return (
-      ticket.clientName?.toLowerCase().includes(s) ||
       ticket.ticketId?.toLowerCase().includes(s) ||
       ticket.issue?.toLowerCase().includes(s) ||
       ticket.assignedTechnician?.nom?.toLowerCase().includes(s) ||

@@ -2,10 +2,9 @@ const asyncHandler = require('../utils/asyncHandler');
 const Alert = require('../models/Alert');
 
 exports.receiveChatbotAlert = asyncHandler(async (req, res, next) => {
-  const { clientName, printerModel, issue, severity, confidence, conversation } = req.body;
+  const { printerModel, issue, severity, confidence, conversation } = req.body;
   
   const alert = await Alert.create({
-    clientName,
     printerModel,
     issue,
     severity,

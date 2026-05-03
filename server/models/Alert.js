@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const alertSchema = new mongoose.Schema({
-  clientName: { type: String, required: true },
+
   printerModel: { type: String, required: true },
   issue: { type: String, required: true },
   severity: { type: String, enum: ['low', 'medium', 'high', 'critical'], required: true },

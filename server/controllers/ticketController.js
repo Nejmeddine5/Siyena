@@ -25,7 +25,6 @@ exports.createTicket = asyncHandler(async (req, res, next) => {
   const ticket = await Ticket.create({
     ticketId: `TICK-${uuidv4().substring(0, 6).toUpperCase()}`,
     alertId: alert._id,
-    clientName: alert.clientName,
     printerModel: alert.printerModel,
     issue: alert.issue,
     priority: alert.severity,
@@ -95,7 +94,7 @@ exports.updateTicketStatus = asyncHandler(async (req, res, next) => {
 });
 
 exports.createManualTicket = asyncHandler(async (req, res, next) => {
-  const { clientName, title, priority, printerModel } = req.body;
+  const { title, priority, printerModel } = req.body;
 
   // Safe check for ObjectId validation
   const performedBy = mongoose.Types.ObjectId.isValid(req.technician?._id)
@@ -104,7 +103,6 @@ exports.createManualTicket = asyncHandler(async (req, res, next) => {
 
   const ticket = await Ticket.create({
     ticketId: `TICK-${uuidv4().substring(0, 6).toUpperCase()}`,
-    clientName,
     printerModel: printerModel || 'Intervention Manuelle',
     issue: title,
     priority: priority || 'medium',
@@ -158,4 +156,32 @@ exports.assignTicket = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: updatedTicket });
 });
 
+exports.deleteTicket = asyncHandler(async (req, res, next) => {
+  const ticket = await Ticket.findById(req.params.id);
 
+  if (!ticket) return next(new AppError('Ticket not found', 404));
+
+  if (ticket.alertId) {
+    const alert = await Alert.findById(ticket.alertId);
+    if (alert) {
+      alert.status = 'new';
+      await alert.save();
+      const io = req.app.get('socketio');
+      if (io) io.emit('alertUpdated', alert);
+    }
+  }
+
+  await Notification.deleteMany({
+    message: { $regex: ticket.ticketId, $options: 'i' }
+  });
+
+  await Ticket.findByIdAndDelete(req.params.id);
+
+  const io = req.app.get('socketio');
+  if (io) io.emit('ticketDeleted', { _id: req.params.id });
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+});

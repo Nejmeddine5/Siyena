@@ -13,6 +13,7 @@ router.post('/manual', ticketController.createManualTicket);
 router.patch('/:id/assign', ticketController.assignTicket);
 
 router.patch('/:id/status', ticketController.updateTicketStatus);
+router.delete('/:id', ticketController.deleteTicket);
 
 
 

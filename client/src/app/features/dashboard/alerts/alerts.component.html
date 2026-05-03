@@ -25,7 +25,6 @@
       <table class="min-w-full divide-y divide-gray-100 dark:divide-gray-700/50">
         <thead class="bg-gray-50/50 dark:bg-gray-900/50">
           <tr>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Client & Modèle</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Problème</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Gravité</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">IA Confidence</th>
@@ -35,7 +34,7 @@
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
           <tr *ngIf="alerts.length === 0">
-            <td colspan="6" class="px-6 py-20 text-center">
+            <td colspan="5" class="px-6 py-20 text-center">
               <div class="flex flex-col items-center">
                 <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center mb-4">
                   <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
@@ -45,17 +44,6 @@
             </td>
           </tr>
           <tr *ngFor="let alert of alerts" class="hover:bg-gray-50/80 dark:hover:bg-gray-750 transition-all group">
-            <td class="px-6 py-5 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm mr-3">
-                  {{ alert.clientName.substring(0, 1).toUpperCase() }}
-                </div>
-                <div>
-                  <div class="text-sm font-bold text-gray-900 dark:text-white">{{ alert.clientName }}</div>
-                  <div class="text-[11px] text-gray-500 font-medium mt-0.5">{{ alert.printerModel }}</div>
-                </div>
-              </div>
-            </td>
             <td class="px-6 py-5">
               <div class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2 max-w-xs font-medium leading-relaxed">
                 {{ alert.issue }}
@@ -119,16 +107,7 @@
     
     <div *ngFor="let alert of alerts" 
          class="alert-card bg-white dark:bg-gray-800 p-5 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
-      <div class="flex justify-between items-start mb-4">
-        <div class="flex items-center">
-            <div class="h-10 w-10 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-sm mr-3">
-                {{ alert.clientName.substring(0, 1).toUpperCase() }}
-            </div>
-            <div>
-                <h3 class="font-bold text-gray-900 dark:text-white text-sm">{{ alert.clientName }}</h3>
-                <p class="text-[11px] text-gray-500 font-medium">{{ alert.printerModel }}</p>
-            </div>
-        </div>
+      <div class="flex justify-end items-start mb-4">
         <span class="px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest"
               [ngClass]="{
                 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400': alert.severity === 'critical',

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ticketSchema = new mongoose.Schema({
   ticketId: { type: String, required: true, unique: true },
   alertId: { type: mongoose.Schema.Types.ObjectId, ref: 'Alert' },
-  clientName: { type: String, required: true },
+
   printerModel: { type: String, required: true },
   issue: { type: String, required: true },
   priority: { type: String, enum: ['low', 'medium', 'high', 'critical'], required: true },

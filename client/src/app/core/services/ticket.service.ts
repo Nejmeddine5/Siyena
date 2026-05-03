@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 
 export interface Alert {
   _id: string;
-  clientName: string;
   printerModel: string;
   issue: string;
   severity: string;
@@ -18,7 +17,6 @@ export interface Ticket {
   _id: string;
   ticketId: string;
   alertId: string | any;
-  clientName: string;
   printerModel: string;
   issue: string;
   priority: string;
@@ -49,13 +47,15 @@ export class TicketService {
   }
 
   createTicket(data: any): Observable<{ status: string, data: Ticket }> {
-    // Check if it's the old signature (alertId as string) or new one (data object)
     if (typeof data === 'string') {
       return this.http.post<{ status: string, data: Ticket }>(`${this.apiUrl}/tickets`, { alertId: data });
     }
     return this.http.post<{ status: string, data: Ticket }>(`${this.apiUrl}/tickets/manual`, data);
   }
 
+  deleteTicket(ticketId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/tickets/${ticketId}`);
+  }
 
   updateTicketStatus(ticketId: string, status: string, resolutionReport?: any): Observable<{ status: string, data: Ticket }> {
     const payload: any = { status };
